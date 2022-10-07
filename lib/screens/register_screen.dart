@@ -4,16 +4,16 @@ import 'package:flutter/material.dart';
 import '../Styles/input_decorations.dart';
 import 'package:products_app/providers/login_form_provider.dart';
 import 'package:products_app/screens/screens.dart';
+import 'package:products_app/services/services.dart';
 import 'package:products_app/widgets/widgets.dart';
 import 'package:provider/provider.dart';
 
-import '../services/services.dart';
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-class LoginScreen extends StatelessWidget {
+class RegisterScreen extends StatelessWidget {
   //Ruta de esta pantalla
-  static const String route = "loginScreen";
+  static const String route = "registerScreen";
   //Constructor
-  const LoginScreen({Key? key}) : super(key: key);
+  const RegisterScreen({Key? key}) : super(key: key);
   //Operaciones
   @override
   Widget build(BuildContext context) {
@@ -27,25 +27,27 @@ class LoginScreen extends StatelessWidget {
               child: Column(
             children: [
               const SizedBox(height: 10),
-              Text("Authentication", style: Theme.of(context).textTheme.headline5),
-              Consumer<AuthService>(builder: (context,authService,child){
-                return Text(authService.sucessMessage);
-              },
+              Text("Register", style: Theme.of(context).textTheme.headline5),
+              Consumer<AuthService>(
+                builder: (context, authService, chil) {
+                  return Text(authService.sucessMessage);
+                },
               ),
               const SizedBox(height: 10),
               _LoginForm()
             ],
           )),
           const SizedBox(height: 50),
+          const SizedBox(height: 50),
           TextButton(
-              onPressed: (){
-                Navigator.pushReplacementNamed(context, RegisterScreen.route);
-              },
-              style: ButtonStyle(
-                  overlayColor:MaterialStateProperty.all(Colors.indigo.withOpacity(0.1)),
-                  shape: MaterialStateProperty.all(StadiumBorder())
-              ) ,
-              child: const Text("Crear una nueva cuenta",style: TextStyle(fontSize: 18,color: Colors.black87)),
+            onPressed: () {
+              Navigator.pushReplacementNamed(context, LoginScreen.route);
+            },
+            style: ButtonStyle(
+                overlayColor: MaterialStateProperty.all(Colors.indigo.withOpacity(0.1)),
+                shape: MaterialStateProperty.all(StadiumBorder())),
+            child: const Text("¿Ya tienes una cuenta?",
+                style: TextStyle(fontSize: 18, color: Colors.black87)),
           )
         ],
       ))),
@@ -64,7 +66,7 @@ class _LoginForm extends StatelessWidget {
   Widget build(BuildContext context) {
     //uso del provider
     final loginForm = Provider.of<LoginFormProvider>(context);
-    final authService = Provider.of<AuthService>(context,listen: false);
+    final authService = Provider.of<AuthService>(context, listen: false);
     //
     return Container(
       child: Form(
@@ -125,20 +127,21 @@ class _LoginForm extends StatelessWidget {
                         FocusScope.of(context).unfocus(); //esconde el teclado
                         if (loginForm.isValidForm() == true) {
                           loginForm.isLoading = true;
-                          //await Future.delayed(Duration(seconds: 2)); //simulamos respuesta de un servicio externo
-                          authService.signIn(loginForm.email, loginForm.password);
+                          //final String? errorMessage = await authService.createUser(loginForm.email, loginForm.password);
+                          authService.signUp(loginForm.email, loginForm.password);
                           loginForm.isLoading = false;
                           //todo ¿porque hay que pulsar dos veces?
                           authService.fireBaseIdToken.isNotEmpty
-                              ? Navigator.pushReplacementNamed(context, PortfolioScreen.route)
+                              ? Navigator.pushReplacementNamed(context, LoginScreen.route)
                               : null;
+                             //Navigator.pushReplacementNamed(context, PortfolioScreen.route);
                         }
                       },
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 80, vertical: 15),
                   child: Text(
                       //texto en función de lo que diga el provider
-                      loginForm.isLoading ? "Wait..." : "Login",
+                      loginForm.isLoading ? "Wait..." : "SignUp",
                       style: const TextStyle(color: Colors.white)),
                 ))
           ],

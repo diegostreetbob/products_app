@@ -1,17 +1,18 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 import 'package:flutter/material.dart';
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-class HomeScreen extends StatelessWidget {
-  //Ruta de esta pantalla
-  static const String route = "homeScreen";
-  //
-  const HomeScreen({Key? key}) : super(key: key);
 
+////////////////////////////////////////////////////////////////////////////////////////////////////
+class  LoadingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text("FormValidationAPP")),
-      body: const Center(child: Text("texto  centrado")),
+      return Scaffold(
+      appBar: AppBar(title: const Text("Productos")),
+      body: const Center(
+          child: CircularProgressIndicator(
+            color: Colors.indigo
+          )
+      ),
     );
   }
 }

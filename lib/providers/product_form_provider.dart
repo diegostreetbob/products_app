@@ -1,0 +1,27 @@
+////////////////////////////////////////////////////////////////////////////////////////////////////
+import 'package:flutter/material.dart';
+////////////////////////////////////////////////////////////////////////////////////////////////////
+import '../models/models.dart';
+////////////////////////////////////////////////////////////////////////////////////////////////////
+class ProductFormProvider extends ChangeNotifier{
+  //Para poder mantener la referencia al formulario
+  GlobalKey<FormState> formKey = new GlobalKey<FormState>();
+  //Producto seleccionado
+  Product product;
+  //Constructor
+  ProductFormProvider(this.product);
+  //
+  bool isValidForm(){
+    print("${product.id}" + "${product.name}"+ "${product.price}");
+    return formKey.currentState?.validate() ?? false;
+  }
+  //
+  updateAvailability(bool value){
+    print(value);
+    this.product.available = value;
+    notifyListeners();
+  }
+
+
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
